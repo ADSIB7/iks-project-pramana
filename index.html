@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pramana</title>
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="cursor-glow"></div>
+    <div class="noise-overlay"></div>
+    <div class="bg-animation">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- FIXED LEFT SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <div class="manuscript-logo">
+                        <svg viewBox="0 0 100 100" class="manuscript-svg" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <g id="outer-mark">
+                                    <line x1="50" y1="5" x2="50" y2="9" stroke="var(--orange-primary)" stroke-width="0.5"/>
+                                    <circle cx="50" cy="11" r="0.8" fill="var(--orange-highlight)"/>
+                                </g>
+                                <g id="middle-glyph">
+                                    <!-- Pseudo-Sanskrit/ancient glyph contour -->
+                                    <path d="M48 22 Q50 20 52 22 T51 26 M49 21 L53 21" fill="none" stroke="var(--orange-primary)" stroke-width="0.6" stroke-linecap="round"/>
+                                    <line x1="50" y1="26" x2="50" y2="29" stroke="var(--orange-primary)" stroke-width="0.4"/>
+                                    <path d="M48 29 A2 2 0 0 0 52 29" fill="none" stroke="var(--orange-highlight)" stroke-width="0.8" />
+                                </g>
+                                <g id="inner-petal">
+                                    <!-- Lotus petal geometry -->
+                                    <path d="M50 33 Q53 38 50 41 Q47 38 50 33" fill="none" stroke="var(--orange-primary)" stroke-width="0.5" />
+                                    <circle cx="50" cy="38" r="0.5" fill="var(--orange-highlight)"/>
+                                </g>
+                                <g id="core-yantra">
+                                    <!-- Sri Yantra abstract intersecting triangles -->
+                                    <polygon points="50,44 45,54 55,54" fill="none" stroke="var(--orange-primary)" stroke-width="0.7"/>
+                                    <polygon points="50,56 45,46 55,46" fill="none" stroke="var(--orange-highlight)" stroke-width="0.7"/>
+                                    <circle cx="50" cy="50" r="1.5" fill="var(--orange-highlight)"/>
+                                </g>
+                                <filter id="svg-glow">
+                                    <feGaussianBlur stdDeviation="0.8" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Background darkness to ground the engraving -->
+                            <circle cx="50" cy="50" r="48" fill="#0b0b0f" opacity="0.6" />
+
+                            <!-- Outer Layer Group -->
+                            <g class="svg-layer-outer" style="transform-origin: 50px 50px;">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="var(--orange-dark)" stroke-width="0.3" />
+                                <circle cx="50" cy="50" r="42" fill="none" stroke="var(--orange-primary)" stroke-width="0.6" stroke-dasharray="1 3" />
+                                <circle cx="50" cy="50" r="39" fill="none" stroke="var(--orange-dark)" stroke-width="0.3" />
+                                <!-- 12 Radial Geometries -->
+                                <use href="#outer-mark" />
+                                <use href="#outer-mark" transform="rotate(30 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(60 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(90 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(120 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(150 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(180 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(210 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(240 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(270 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(300 50 50)"/>
+                                <use href="#outer-mark" transform="rotate(330 50 50)"/>
+                            </g>
+
+                            <!-- Middle Layer Group -->
+                            <g class="svg-layer-middle" style="transform-origin: 50px 50px;">
+                                <circle cx="50" cy="50" r="30" fill="none" stroke="var(--orange-primary)" stroke-width="0.5" stroke-dasharray="8 3" />
+                                <circle cx="50" cy="50" r="16.5" fill="none" stroke="var(--orange-dark)" stroke-width="0.4" />
+                                <!-- 8 Abstract Glyphs -->
+                                <use href="#middle-glyph" />
+                                <use href="#middle-glyph" transform="rotate(45 50 50)"/>
+                                <use href="#middle-glyph" transform="rotate(90 50 50)"/>
+                                <use href="#middle-glyph" transform="rotate(135 50 50)"/>
+                                <use href="#middle-glyph" transform="rotate(180 50 50)"/>
+                                <use href="#middle-glyph" transform="rotate(225 50 50)"/>
+                                <use href="#middle-glyph" transform="rotate(270 50 50)"/>
+                                <use href="#middle-glyph" transform="rotate(315 50 50)"/>
+                            </g>
+
+                            <!-- Inner Layer Group -->
+                            <g class="svg-layer-inner" style="transform-origin: 50px 50px;">
+                                <circle cx="50" cy="50" r="12" fill="none" stroke="var(--orange-highlight)" stroke-width="0.6" stroke-dasharray="1 4" />
+                                <!-- 6 Inner Lotus Petals -->
+                                <use href="#inner-petal" />
+                                <use href="#inner-petal" transform="rotate(60 50 50)"/>
+                                <use href="#inner-petal" transform="rotate(120 50 50)"/>
+                                <use href="#inner-petal" transform="rotate(180 50 50)"/>
+                                <use href="#inner-petal" transform="rotate(240 50 50)"/>
+                                <use href="#inner-petal" transform="rotate(300 50 50)"/>
+                            </g>
+
+                            <!-- Center Core -->
+                            <g class="svg-core" style="transform-origin: 50px 50px;" filter="url(#svg-glow)">
+                                <use href="#core-yantra" />
+                            </g>
+                        </svg>
+                    </div>
+                    <h2 class="text-glow">Pramana</h2>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-target="time">
+                    <i class="ph ph-hourglass-medium"></i>
+                    <span>Time</span>
+                </div>
+                <div class="nav-item" data-target="distance">
+                    <i class="ph ph-ruler"></i>
+                    <span>Distance</span>
+                </div>
+                <div class="nav-item" data-target="weight">
+                    <i class="ph ph-scales"></i>
+                    <span>Weight</span>
+                </div>
+                <div class="nav-item" data-target="orientation">
+                    <i class="ph ph-planet"></i>
+                    <span>Orientation</span>
+                </div>
+                <div class="nav-item" data-target="facts">
+                    <i class="ph ph-lightbulb"></i>
+                    <span>Fun Facts</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="header-titles">
+                    <h1 class="stagger-1 text-glow">Measurement Systems of Ancient India</h1>
+                    <p class="subtitle stagger-2">Blending Sacred Tradition with Exact Science</p>
+                    <!-- Gradient Orange Line with soft pulsing glow -->
+                    <div class="gradient-divider stagger-2"></div>
+                </div>
+                <div class="header-decor magnetic-el">
+                    <div class="geocentric-system">
+                        <div class="earth"></div>
+                        <div class="moon-orbit">
+                            <div class="moon"></div>
+                        </div>
+                        <div class="sun-orbit">
+                            <div class="sun"></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-container">
+                
+                <!-- SECTION 1: TIME -->
+                <section id="time" class="dashboard-section active">
+                    <div class="section-body">
+                        <div class="visual-panel interactive-card">
+                            <div class="visual-art time-art">
+                                <i class="ph ph-moon-stars orange-glow"></i>
+                            </div>
+                        </div>
+                        <div class="cards-panel">
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Nimesha</h3>
+                                <p class="card-desc">The briefest unit, equal to the blink of an eye. Forms the discrete basis for all ancient time tracking.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Kshana</h3>
+                                <p class="card-desc">Equivalent to 1.6 modern seconds. Historically used to measure momentary fractions of rituals and phenomena.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Ghati</h3>
+                                <p class="card-desc">Equivalent to exactly 24 modern minutes. Historically measured precisely by a sinking water bowl.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Muhurta</h3>
+                                <p class="card-desc">Consists of 2 Ghatis (48 minutes). Integral for planning, with exactly 30 Muhurtas forming a full solar day.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="converter-panel interactive-card stagger-el dual-converter">
+                        <div class="converter-title text-glow">Time Converter</div>
+                        <div class="converter-controls">
+                            <div class="side-panel left-side">
+                                <div class="pill-selector">
+                                    <div class="pill-slider"></div>
+                                    <div class="pill-btn" data-unit="s">Sec</div>
+                                    <div class="pill-btn" data-unit="min">Min</div>
+                                    <div class="pill-btn active" data-unit="hr">Hr</div>
+                                </div>
+                                <div class="input-wrap">
+                                    <input type="number" class="calc-input left-input" placeholder="0" min="0">
+                                    <span class="unit-label left-label">Hours</span>
+                                </div>
+                            </div>
+                            <div class="swap-container magnetic-el">
+                                <i class="ph ph-arrows-left-right swap-icon"></i>
+                            </div>
+                            <div class="side-panel right-side">
+                                <div class="pill-selector">
+                                    <div class="pill-slider"></div>
+                                    <div class="pill-btn" data-unit="nimesha">Nimesha</div>
+                                    <div class="pill-btn" data-unit="kshana">Kshana</div>
+                                    <div class="pill-btn" data-unit="ghati">Ghati</div>
+                                    <div class="pill-btn active" data-unit="muhurta">Muhurta</div>
+                                </div>
+                                <div class="input-wrap">
+                                    <input type="number" class="calc-input right-input" placeholder="0" min="0">
+                                    <span class="unit-label right-label">Muhurtas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: DISTANCE -->
+                <section id="distance" class="dashboard-section">
+                    <div class="section-body">
+                        <div class="visual-panel interactive-card">
+                            <div class="visual-art distance-art">
+                                <i class="ph ph-compass-tool orange-glow"></i>
+                            </div>
+                        </div>
+                        <div class="cards-panel distance-cards">
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Angula</h3>
+                                <p class="card-desc">A finger's breadth. The fundamental standard unit across ancient architectural and monumental blueprints.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Hasta</h3>
+                                <p class="card-desc">A forearm's length, or 24 Angulas. A versatile measure used for daily commerce, textiles, and minor structures.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Dhanus</h3>
+                                <p class="card-desc">Equivalent to a bow-length (4 Hastas). Employed extensively in land surveying and town demarcations.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Yojana</h3>
+                                <p class="card-desc">A geographic measure (≈ 12-15 km). Used by ancient astronomers to describe terrestrial and cosmic distances.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="converter-panel interactive-card stagger-el dual-converter">
+                        <div class="converter-title text-glow">Distance Converter</div>
+                        <div class="converter-controls">
+                            <div class="side-panel left-side">
+                                <div class="pill-selector">
+                                    <div class="pill-slider"></div>
+                                    <div class="pill-btn active" data-unit="km">km</div>
+                                    <div class="pill-btn" data-unit="m">m</div>
+                                    <div class="pill-btn" data-unit="cm">cm</div>
+                                </div>
+                                <div class="input-wrap">
+                                    <input type="number" class="calc-input left-input" placeholder="0" min="0">
+                                    <span class="unit-label left-label">Kilometers</span>
+                                </div>
+                            </div>
+                            <div class="swap-container magnetic-el">
+                                <i class="ph ph-arrows-left-right swap-icon"></i>
+                            </div>
+                            <div class="side-panel right-side">
+                                <div class="pill-selector">
+                                    <div class="pill-slider"></div>
+                                    <div class="pill-btn active" data-unit="angula">Angula</div>
+                                    <div class="pill-btn" data-unit="hasta">Hasta</div>
+                                    <div class="pill-btn" data-unit="dhanus">Dhanus</div>
+                                    <div class="pill-btn" data-unit="yojana">Yojana</div>
+                                </div>
+                                <div class="input-wrap">
+                                    <input type="number" class="calc-input right-input" placeholder="0" min="0">
+                                    <span class="unit-label right-label">Angulas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 3: WEIGHT -->
+                <section id="weight" class="dashboard-section">
+                    <div class="section-body">
+                        <div class="visual-panel interactive-card">
+                            <div class="visual-art weight-art">
+                                <i class="ph ph-scales orange-glow"></i>
+                            </div>
+                        </div>
+                        <div class="cards-panel weight-cards">
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Ratti</h3>
+                                <p class="card-desc">The remarkably highly uniform seed of the Gunja plant. The ultimate natural benchmark for early orangesmiths.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Masha</h3>
+                                <p class="card-desc">Equivalent to 8 Rattis (approx. 0.97g). Used predominantly in early Ayurvedic medicine prescriptions.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Tola</h3>
+                                <p class="card-desc">Valued at 12 Mashas (approx. 11.66g). A robust standard surviving even into modern South Asian metal markets.</p>
+                            </div>
+                            <div class="info-card interactive-card stagger-el">
+                                <h3>Pala</h3>
+                                <p class="card-desc">A larger mass equalling 4 Tolas. Extensively utilized in weighing agricultural yields and bulk apothecary items.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="converter-panel interactive-card stagger-el dual-converter">
+                        <div class="converter-title text-glow">Weight Converter</div>
+                        <div class="converter-controls">
+                            <div class="side-panel left-side">
+                                <div class="pill-selector">
+                                    <div class="pill-slider"></div>
+                                    <div class="pill-btn active" data-unit="g">g</div>
+                                    <div class="pill-btn" data-unit="kg">kg</div>
+                                </div>
+                                <div class="input-wrap">
+                                    <input type="number" class="calc-input left-input" placeholder="0" min="0">
+                                    <span class="unit-label left-label">Grams</span>
+                                </div>
+                            </div>
+                            <div class="swap-container magnetic-el">
+                                <i class="ph ph-arrows-left-right swap-icon"></i>
+                            </div>
+                            <div class="side-panel right-side">
+                                <div class="pill-selector">
+                                    <div class="pill-slider"></div>
+                                    <div class="pill-btn" data-unit="ratti">Ratti</div>
+                                    <div class="pill-btn" data-unit="masha">Masha</div>
+                                    <div class="pill-btn active" data-unit="tola">Tola</div>
+                                    <div class="pill-btn" data-unit="pala">Pala</div>
+                                </div>
+                                <div class="input-wrap">
+                                    <input type="number" class="calc-input right-input" placeholder="0" min="0">
+                                    <span class="unit-label right-label">Tolas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 4: ORIENTATION (3D) -->
+                <section id="orientation" class="dashboard-section">
+                    <div class="canvas-wrapper interactive-card" id="three-container">
+                        <!-- ThreeJS Canvas Mount Point -->
+                    </div>
+                    <div class="bottom-telemetry-bar interactive-card stagger-el">
+                        <div class="telemetry-metric">
+                            <span class="t-label">θ Moon</span>
+                            <span class="t-value text-glow" id="t-moon-orb">0.00°</span>
+                        </div>
+                        <div class="telemetry-metric">
+                            <span class="t-label">θ Sun</span>
+                            <span class="t-value text-glow" id="t-sun-orb">0.00°</span>
+                        </div>
+                        <button id="calc-panchang-btn" class="orange-btn magnetic-el">
+                            <i class="ph ph-sparkle"></i> Calculate
+                        </button>
+                    </div>
+
+                    <!-- Panchang Calculations Modal -->
+                    <div id="panchang-modal" class="modal-overlay">
+                        <div class="modal-content interactive-card">
+                            <button id="close-modal" class="close-btn"><i class="ph ph-x"></i></button>
+                            <h3 class="modal-title text-glow">Panchang Calculations</h3>
+                            <div class="gradient-divider" style="margin: 0.8rem auto 1.5rem; width: 60%;"></div>
+                            <div class="panchang-results">
+                                <div class="p-row">
+                                    <span class="p-label">Tithi</span>
+                                    <span class="p-value" id="res-tithi">0</span>
+                                </div>
+                                <div class="p-row">
+                                    <span class="p-label">Nakshatra</span>
+                                    <span class="p-value" id="res-nakshatra">0</span>
+                                </div>
+                                <div class="p-row">
+                                    <span class="p-label">Karana</span>
+                                    <span class="p-value" id="res-karana">0</span>
+                                </div>
+                                <div class="p-row">
+                                    <span class="p-label">Yoga</span>
+                                    <span class="p-value" id="res-yoga">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 5: FUN FACTS -->
+                <section id="facts" class="dashboard-section">
+                    <div class="facts-header">
+                        <h2 class="section-title text-glow">Curious Revelations</h2>
+                        <div class="facts-controls">
+                            <button id="refresh-facts-btn" class="orange-btn magnetic-el">
+                                <i class="ph ph-arrows-clockwise"></i> Refresh Facts
+                            </button>
+                        </div>
+                    </div>
+                    <div class="facts-container" id="facts-container">
+                        <!-- Card 1 -->
+                        <div class="fact-card flip-card stagger-el" id="fact-card-0">
+                            <div class="fact-front interactive-card" id="fact-front-0">
+                                <i class="ph ph-drop orange-glow"></i>
+                                <h3>Water Clocks</h3>
+                                <p>Hover to reveal</p>
+                            </div>
+                            <div class="fact-back interactive-card" id="fact-back-0">
+                                <p>Ancient Indians tracked time with Ghatika Yantras—hemispherical copper bowls with a precise hole that sank entirely after exactly 24 minutes.</p>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="fact-card flip-card stagger-el" id="fact-card-1">
+                            <div class="fact-front interactive-card" id="fact-front-1">
+                                <i class="ph ph-plant orange-glow"></i>
+                                <h3>The Perfect Seed</h3>
+                                <p>Hover to reveal</p>
+                            </div>
+                            <div class="fact-back interactive-card" id="fact-back-1">
+                                <p>Ratti seeds (Abrus precatorius) were used because their weight varies by less than 5% anywhere in nature, forming the perfect prehistoric standard.</p>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="fact-card flip-card stagger-el" id="fact-card-2">
+                            <div class="fact-front interactive-card" id="fact-front-2">
+                                <i class="ph ph-globe-hemisphere-east orange-glow"></i>
+                                <h3>Measuring Cosmos</h3>
+                                <p>Hover to reveal</p>
+                            </div>
+                            <div class="fact-back interactive-card" id="fact-back-2">
+                                <p>Aryabhata used Yojanas to calculate the Earth's circumference in the 5th century, achieving an accuracy remarkably close to modern geodetic measurements.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script type="module" src="orientation.js"></script>
+</body>
+</html>
