@@ -606,7 +606,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     color: #ffad33;
     padding: 0.6rem 1.4rem;
     border-radius: 30px;
-    font-family: var(--font-heading);
+    font-family: var(--font-head);
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
